@@ -16,7 +16,7 @@ function getUserInfo(userId) {
 function VideoCalling() {
   const [meetingId, setMeetingId] = useState(null);
 
-  const userInfo = getUserInfo("xyz");
+  const userInfo = getUserInfo("xyz1");
 
   const getMeetingAndToken = async (id) => {
     const meetingId =

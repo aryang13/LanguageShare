@@ -52,30 +52,26 @@ function ParticipantView(props) {
 							},
 						},
 					).then((res) => res.json());
-					console.log(json);
 					const transcriptedText =
 						json.results && json.results.length > 0
 							? json.results[0].alternatives[0].transcript
 							: null;
-					console.log(transcriptedText);
-          if(transcriptedText) {
-            const translate = await fetch(
-              `https://translation.googleapis.com/language/translate/v2?key=${googleAPIKey}`,
-              {
-                method: 'POST',
-                body: JSON.stringify({
-                  q: transcriptedText,
-                  target: 'fr',
-                }),
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              },
-            ).then((res) => res.json());
-            console.log(translate);
-			props.setTranslation((prev) => [...prev, {transcription: transcriptedText, translation: translate.data.translations[0].translatedText}]);
-          }
-					// Now you can use the base64String as needed
+					if(transcriptedText) {
+						const translate = await fetch(
+						`https://translation.googleapis.com/language/translate/v2?key=${googleAPIKey}`,
+						{
+							method: 'POST',
+							body: JSON.stringify({
+							q: transcriptedText,
+							target: 'fr',
+							}),
+							headers: {
+							'Content-Type': 'application/json',
+							},
+						},
+						).then((res) => res.json());
+						props.setTranslation((prev) => [...prev, {transcription: transcriptedText, translation: translate.data.translations[0].translatedText}]);
+					}
 				};
 
 				// Event handler when data is available
@@ -90,8 +86,12 @@ function ParticipantView(props) {
 				};
 
 				mediaRecorder.onstop = () => {
-					mediaRecorder = new MediaRecorder(mediaStream);
-					mediaRecorder.start();
+					try {
+						mediaRecorder = new MediaRecorder(mediaStream);
+						mediaRecorder.start();
+					} catch (err) {
+					   console.error(err)
+					}
 				};
 
 				micRef.current.srcObject = mediaStream;
@@ -140,7 +140,7 @@ function ParticipantView(props) {
 					<WebcamOff height='100%' width='100%' />
 				</div>
 			)}
-			<p className='flex justify-end'>Participant: {displayName}</p>
+			<p className='flex justify-end'>{displayName}</p>
 		</div>
 	);
 }

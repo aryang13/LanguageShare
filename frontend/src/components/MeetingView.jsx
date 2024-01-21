@@ -52,7 +52,7 @@ function MeetingView(props) {
 						<div className='chat chat-start'>
 							{
 								translation.map((t) => (
-									<div className='chat-bubble'>
+									<div className='chat-bubble w-full'>
 										{t.transcription}
 										<div className='divider my-2'></div>
 										{t.translation}
