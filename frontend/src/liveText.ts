@@ -3,7 +3,7 @@ import * as recorder from 'node-record-lpcm16';
 import speech from "@google-cloud/speech"
 
 const client = new speech.SpeechClient({
-  keyFilename: './google-auth.json'
+  keyFilename: '../google-auth.json'
 });
 
 const {Translate} = require('@google-cloud/translate').v2;
@@ -44,7 +44,6 @@ const audioStream = recorder.record({
   channels: 1, // Mono audio
   audioType: 'raw', // Output audio type
 }).stream();
-
 
 audioStream.pipe(recognizeStream);
 
