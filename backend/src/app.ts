@@ -7,7 +7,11 @@ import { matchmake } from './matchmaking';
 const app = express();
 const PORT = 8080;
 const server = createServer(app);
-const io = new Server(server);
+const io = require('socket.io')(server, {
+  cors: {
+    origin: '*',
+  }
+});
 
 function onServerListening(): void {
     console.log("Server is Successfully Running, and App is listening on port " + PORT);
