@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef } from "react";
 import ReactPlayer from "react-player";
 import { useParticipant } from "@videosdk.live/react-sdk";
 import WebcamOff from "../assets/icons/WebcamOff";
-import { googleAPIKey } from "../../secrets";
+import { googleAPIKey } from "../secrets";
 
 function ParticipantView(props) {
     const micRef = useRef(null);
