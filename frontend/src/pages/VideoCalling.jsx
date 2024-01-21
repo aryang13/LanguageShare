@@ -4,8 +4,18 @@ import { authToken, createMeeting } from "../util/video/conferenceHelpers";
 import JoinScreen from "../components/JoinScreen";
 import MeetingView from "../components/MeetingView";
 
+function getUserInfo(userId) {
+    return {
+        name: "Aryan Gandhi",
+        email: "aryan.gandhi@hotmail.com",
+        id: userId
+    };
+}
+
 function VideoCalling() {
   const [meetingId, setMeetingId] = useState(null);
+
+  const userInfo = getUserInfo("xyz");
 
   const getMeetingAndToken = async (id) => {
     const meetingId =
@@ -23,13 +33,14 @@ function VideoCalling() {
         meetingId,
         micEnabled: true,
         webcamEnabled: true,
-        name: "C.V. Raman",
+        name: userInfo.name,
+        participantId: userInfo.id,
       }}
       token={authToken}
     >
       <MeetingConsumer>
         {() => (
-          <MeetingView meetingId={meetingId} onMeetingLeave={onMeetingLeave} />
+          <MeetingView meetingId={meetingId} onMeetingLeave={onMeetingLeave} userInfo={userInfo}/>
         )}
       </MeetingConsumer>
     </MeetingProvider>

@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import ReactPlayer from "react-player";
 import { useParticipant } from "@videosdk.live/react-sdk";
+import WebcamOff from "../assets/icons/WebcamOff";
 
 function ParticipantView(props) {
     const micRef = useRef(null);
-    const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName } =
-      useParticipant(props.participantId);
+    const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName } = useParticipant(props.participantId);
   
     const videoStream = useMemo(() => {
       if (webcamOn && webcamStream) {
@@ -34,30 +34,34 @@ function ParticipantView(props) {
     }, [micStream, micOn]);
   
     return (
-      <div key={props.participantId}>
+      <div key={props.participantId} className="w-full">
         <p>
-          Participant: {displayName} | Webcam: {webcamOn ? "ON" : "OFF"} | Mic:{" "}
-          {micOn ? "ON" : "OFF"}
+          Participant: {displayName}
         </p>
         <audio ref={micRef} autoPlay muted={isLocal} />
-        {webcamOn && (
-          <ReactPlayer
-            //
-            playsinline // very very imp prop
-            pip={false}
-            light={false}
-            controls={false}
-            muted={true}
-            playing={true}
-            //
-            url={videoStream}
-            //
-            height={"200px"}
-            width={"300px"}
-            onError={(err) => {
-              console.log(err, "participant video error");
-            }}
-          />
+        {webcamOn ? (
+            <ReactPlayer
+                //
+                playsinline // very very imp prop
+                pip={false}
+                light={false}
+                controls={false}
+                muted={true}
+                playing={true}
+                //
+                url={videoStream}
+                //
+                onError={(err) => {
+                    console.log(err, "participant video error");
+                }}
+                width="100%"
+                height="850px"
+                className="flex justify-center"
+            />
+        ) : (
+            <div className="flex justify-center items-center p-5" style={{ "height": "850px" }}>
+                <WebcamOff />
+            </div>
         )}
       </div>
     );
