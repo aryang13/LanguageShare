@@ -87,6 +87,7 @@ function Home() {
 
 		socket.on('join question', (joinQuestion) => {
 			setJoinQuestion(joinQuestion);
+			// [user, meetingID]
 			setModalOpen(true);
 		});
 
@@ -104,6 +105,11 @@ function Home() {
 			</div>
 		);
 	};
+
+	const handleAcceptCall = (joinQuestion) => {
+		console.log(joinQuestion);
+		setModalOpen(false);
+	}
 
 	return (
 		<div className='grid grid-cols-3 gap-4 px-20 py-10'>
@@ -142,13 +148,13 @@ function Home() {
 					<div className='flex flex-col'>
 						<p>You are receiving a call from "Eric".</p>
 						<ul className='menu bg-base-200 w-56 rounded-box'>
-							<button className='btn btn-green'>Accept</button>
+							<button className='btn btn-green' onClick={() => handleAcceptCall(joinQuestion)}>Accept</button>
 							<button className='btn'>Decline</button>
 						</ul>
 					</div>
 				</div>
 			)}
-		</div>
+			</div>
 	);
 }
 

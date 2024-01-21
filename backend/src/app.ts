@@ -42,7 +42,7 @@ io.on('connection', (socket: Socket) => {
         // messages
     });
 
-    socket.on('request-video-call', (uuid: string, roomId: string) => {
+    socket.on('request-video-call', (uuid: string, roomId: string, meetingID: string) => {
         // roomId is the language
         io.to(roomId).emit('user-requested-video-call', uuid);
         socket.broadcast.emit('user-requested-video-call', uuid);
@@ -52,9 +52,9 @@ io.on('connection', (socket: Socket) => {
         if (matchedUsers) {
             socket.broadcast.emit('matched-users', matchedUsers);
             const otherMatchedUser = matchedUsers[Object.keys(matchedUsers)[0]];
-            const joinQuestion: string = "would you like to join a video call with " + uuid + "?";
+            const acceptedMeetingId: string = meetingID;
             io.to(roomId).emit('user-requested-video-call', uuid);
-            socket.to(roomId).emit('join question', joinQuestion);
+            socket.to(roomId).emit('join question', acceptedMeetingId);
             console.log("sent join question to: " + otherMatchedUser.uuid);
         }
     });
