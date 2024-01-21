@@ -17,6 +17,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:speech": "ts-node src/liveText.ts",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
