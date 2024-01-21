@@ -23,14 +23,6 @@ export default class User {
             "English": 1000,
             "Spanish": 1000,
             "French": 1000,
-            "German": 1000,
-            "Italian": 1000,
-            "Portuguese": 1000,
-            "Russian": 1000,
-            "Japanese": 1000,
-            "Korean": 1000,
-            "Chinese": 1000,
-            "Arabic": 1000,
         };
         this.elo = this.language ? this.getEloForLanguage(this.language) : -1;
     }

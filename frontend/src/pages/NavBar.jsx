@@ -8,7 +8,7 @@ function NavBar() {
 			<div className='navbar px-20 bg-base-100'>
 				<div className='flex-1'>
 					<NavLink to='/' className='btn btn-ghost text-2xl'>
-						LanguageLearner
+						LanguageShare
 					</NavLink>
 				</div>
 				<div className='flex-none'>
