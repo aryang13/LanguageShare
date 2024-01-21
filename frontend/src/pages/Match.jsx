@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import { localUuid } from '../secrets';
+import VideoCalling from './VideoCalling';
 
 const uuid = localUuid;
 
-const Match = ({ language }) => {
-    const [loading, setLoading] = useState(true);
-
+const Match = ({ language, loading, meetingId, setMeetingId }) => {
     useEffect(() => {
         const roomId = language;
         const socket = io('http://localhost:8080');
@@ -28,30 +27,24 @@ const Match = ({ language }) => {
 
         // Emit 'request-video-call' event to request a video call
         // generate meetingID when this is mad e. 
-        socket.emit('request-video-call', uuid, roomId, meetingID);
-
-
+        if (meetingId) {
+            socket.emit('request-video-call', uuid, roomId, meetingId);
+        }
+        
         // Listen for 'matched-users' event to handle when matched users are found
         socket.on('matched-users', (matchedUsers) => {
             // Handle matched users
             console.log(matchedUsers);
-            setLoading(false);
-
         });
 
         return () => {
             socket.disconnect();
         };
-    }, [language]);
+    }, [language, meetingId]);
 
     return (
         <div>
-            {loading ? (
-                <div>Matching based on elo...</div>
-            ) : (
-                <div>Match found! Starting the call...</div>
-                // add call component here
-            )}
+            <VideoCalling loading={loading} meetingId={meetingId} setMeetingId={setMeetingId}/>
         </div>
     );
 };

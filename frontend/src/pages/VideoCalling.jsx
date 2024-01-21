@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { MeetingProvider, MeetingConsumer } from "@videosdk.live/react-sdk";
 import { createMeeting } from "../util/video/conferenceHelpers.js";
 import { authToken } from "../secrets";
-import JoinScreen from "../components/JoinScreen.jsx";
 import MeetingView from "../components/MeetingView.jsx";
+import { useNavigate } from "react-router-dom";
 
 function getUserInfo(userId) {
     return {
@@ -13,41 +13,36 @@ function getUserInfo(userId) {
     };
 }
 
-function VideoCalling() {
-  const [meetingId, setMeetingId] = useState(null);
-
-  const userInfo = getUserInfo("xyz1");
-
-  const getMeetingAndToken = async (id) => {
-    const meetingId =
-      id == null ? await createMeeting({ token: authToken }) : id;
-    setMeetingId(meetingId);
-  };
+function VideoCalling(props) {
+  const userInfo = getUserInfo("xyz2");
+  const { meetingId, setMeetingId } = props;
 
   const onMeetingLeave = () => {
     setMeetingId(null);
   };
 
-  return authToken && meetingId ? (
-    <MeetingProvider
-      config={{
-        meetingId,
-        micEnabled: true,
-        webcamEnabled: true,
-        name: userInfo.name,
-        participantId: userInfo.id,
-      }}
-      token={authToken}
-    >
-      <MeetingConsumer>
-        {() => (
-          <MeetingView meetingId={meetingId} onMeetingLeave={onMeetingLeave} userInfo={userInfo}/>
-        )}
-      </MeetingConsumer>
-    </MeetingProvider>
-  ) : (
-    <JoinScreen getMeetingAndToken={getMeetingAndToken} />
-  );
+  return props.loading ? (
+    <div>Matching based on elo...</div>
+    ) : (
+      authToken && props.meetingId && (
+        <MeetingProvider
+          config={{
+            meetingId,
+            micEnabled: true,
+            webcamEnabled: true,
+            name: userInfo.name,
+            participantId: userInfo.id,
+          }}
+          token={authToken}
+        >
+          <MeetingConsumer>
+            {() => (
+              <MeetingView meetingId={meetingId} onMeetingLeave={onMeetingLeave} userInfo={userInfo}/>
+            )}
+          </MeetingConsumer>
+        </MeetingProvider>
+      )
+    )
 }
 
 export default VideoCalling;

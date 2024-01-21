@@ -1,11 +1,22 @@
 import React, { useState } from 'react';
 import Match from './Match';
+import { createMeeting } from '../util/video/conferenceHelpers.js';
+import { authToken } from '../secrets';
 
 function MatchMaking() {
 	const [selectedLanguage, setSelectedLanguage] = useState('');
+	const [loading, setLoading] = useState(true);
+	const [meetingId, setMeetingId] = useState(true);
 
-	const handleButtonClick = (language) => {
+	const getMeetingAndToken = async () => {
+		const meetingId = await createMeeting({ token: authToken });
+		setMeetingId(meetingId);
+		setLoading(false);
+	};
+
+	const handleButtonClick = async (language) => {
 		setSelectedLanguage(language);
+		await getMeetingAndToken();
 	};
 
 	return (
@@ -23,7 +34,7 @@ function MatchMaking() {
 					</ul>
 				</>
 			)}
-			{selectedLanguage && <Match language={selectedLanguage} />}
+			{selectedLanguage && <Match language={selectedLanguage} loading={loading} meetingId={meetingId} setMeetingId={setMeetingId}/>}
 		</div>
 	);
 }

@@ -5,10 +5,17 @@ import {
 } from 'react-icons/hi2';
 import { IoMicOutline, IoMicOffSharp } from 'react-icons/io5';
 import { PiPhoneX } from 'react-icons/pi';
+import { useNavigate } from 'react-router-dom';
 
 function Controls({ webcamOn, micOn }) {
 	console.log(webcamOn, micOn);
 	const { leave, toggleMic, toggleWebcam } = useMeeting();
+	const navigate = useNavigate();
+	
+	const onLeave = () => {
+		leave();
+		navigate("/");
+	}
 
 	return (
 		<div className='flex w-full justify-center gap-8 pt-2'>
@@ -33,7 +40,7 @@ function Controls({ webcamOn, micOn }) {
 				)}
 			</button>
 			<button
-				onClick={() => leave()}
+				onClick={() => onLeave()}
 				className='btn btn-circle bg-red-500 w-14 h-14'
 			>
 				<PiPhoneX size={30} />
