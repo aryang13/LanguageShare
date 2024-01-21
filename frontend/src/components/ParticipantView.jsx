@@ -111,7 +111,7 @@ function ParticipantView(props) {
 	}, [micStream, micOn, props]);
 
 	return (
-		<div key={props.participantId} className='w-full bg-neutral-500'>
+		<div key={props.participantId} className='w-full bg-transparent'>
 			<audio ref={micRef} autoPlay muted={isLocal} />
 			{webcamOn ? (
 				<ReactPlayer

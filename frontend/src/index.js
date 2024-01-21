@@ -7,6 +7,7 @@ import Chats from './pages/Chats';
 import MatchMaking from './pages/MatchMaking';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import VideoCalling from './pages/VideoCalling';
 
 const router = createBrowserRouter([
 	{
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
 				path: '/matchmaking',
 				element: <MatchMaking />,
 			},
+			{
+				path: '/call',
+				element: <VideoCalling />,
+			}
 		],
 	},
 ]);
