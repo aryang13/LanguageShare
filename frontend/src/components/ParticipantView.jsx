@@ -58,20 +58,23 @@ function ParticipantView(props) {
 							? json.results[0].alternatives[0].transcript
 							: null;
 					console.log(transcriptedText);
-					const translate = await fetch(
-						`https://translation.googleapis.com/language/translate/v2?key=${googleAPIKey}`,
-						{
-							method: 'POST',
-							body: JSON.stringify({
-								q: transcriptedText,
-								target: 'fr',
-							}),
-							headers: {
-								'Content-Type': 'application/json',
-							},
-						},
-					).then((res) => res.json());
-					console.log(translate);
+          if(transcriptedText) {
+            const translate = await fetch(
+              `https://translation.googleapis.com/language/translate/v2?key=${googleAPIKey}`,
+              {
+                method: 'POST',
+                body: JSON.stringify({
+                  q: transcriptedText,
+                  target: 'fr',
+                }),
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              },
+            ).then((res) => res.json());
+            console.log(translate);
+			props.setTranslation((prev) => [...prev, {transcription: transcriptedText, translation: translate.data.translations[0].translatedText}]);
+          }
 					// Now you can use the base64String as needed
 				};
 
@@ -103,7 +106,7 @@ function ParticipantView(props) {
 
 				setInterval(() => {
 					mediaRecorder.stop();
-				}, 3000);
+				}, 5000);
 			} else {
 				micRef.current.srcObject = null;
 			}
@@ -111,7 +114,7 @@ function ParticipantView(props) {
 	}, [micStream, micOn, props]);
 
 	return (
-		<div key={props.participantId} className='w-full bg-transparent'>
+		<div key={props.participantId} className='w-full bg-transparent flex flex-col'>
 			<audio ref={micRef} autoPlay muted={isLocal} />
 			{webcamOn ? (
 				<ReactPlayer

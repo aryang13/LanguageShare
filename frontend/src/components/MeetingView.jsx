@@ -22,12 +22,13 @@ function MeetingView(props) {
 	const { webcamOn, micOn } = useParticipant(props.participantId);
 	const [isWebCamEnabled, setIsWebCamEnabled] = useState(webcamOn);
 	const [isMicEnabled, setIsMicEnabled] = useState(micOn);
+	const [translation, setTranslation] = useState([]);
 
 	return (
 		<div>
 			{joined && joined === 'JOINED' ? (
 				<div className='flex'>
-					<div className='flex flex-col justify-center items-center'>
+					<div className='flex flex-col items-center'>
 						<div className='flex justify-center'>
 							{[...participants.keys()].map((participantId) => (
 								<ParticipantView
@@ -35,6 +36,8 @@ function MeetingView(props) {
 									key={participantId}
 									setIsWebCamEnabled={setIsWebCamEnabled}
 									setIsMicEnabled={setIsMicEnabled}
+									translation={translation}
+									setTranslation={setTranslation}
 								/>
 							))}
 						</div>
@@ -47,13 +50,15 @@ function MeetingView(props) {
 						<p>Translation:</p>
 						<p></p>
 						<div className='chat chat-start'>
-							<div className='chat-bubble'>
-								Hello how are you? My name is Allen nice to meet
-								you.
-								<div className='divider my-2'></div>
-								¿Hola, cómo estás? Mi nombre es Allen, un placer
-								conocerlo. tú.
-							</div>
+							{
+								translation.map((t) => (
+									<div className='chat-bubble'>
+										{t.transcription}
+										<div className='divider my-2'></div>
+										{t.translation}
+									</div>
+								))
+							}
 						</div>
 					</div>
 				</div>
