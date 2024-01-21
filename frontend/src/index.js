@@ -29,7 +29,7 @@ const router = createBrowserRouter([
 			{
 				path: '/call',
 				element: <VideoCalling />,
-			}
+			},
 		],
 	},
 ]);

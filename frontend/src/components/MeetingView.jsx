@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useMeeting, useParticipant } from '@videosdk.live/react-sdk';
 import Controls from './Controls';
 import ParticipantView from './ParticipantView';
@@ -6,6 +6,8 @@ import ParticipantView from './ParticipantView';
 function MeetingView(props) {
 	const [joined, setJoined] = useState(null);
 	const { join } = useMeeting();
+	const lastChildRef = useRef(null);
+
 	const { participants } = useMeeting({
 		onMeetingJoined: () => {
 			setJoined('JOINED');
@@ -23,6 +25,12 @@ function MeetingView(props) {
 	const [isWebCamEnabled, setIsWebCamEnabled] = useState(webcamOn);
 	const [isMicEnabled, setIsMicEnabled] = useState(micOn);
 	const [translation, setTranslation] = useState([]);
+
+	useEffect(() => {
+		if (lastChildRef.current) {
+			lastChildRef.current.scrollIntoView({ behavior: 'smooth' });
+		}
+	}, [translation]);
 
 	return (
 		<div>
@@ -46,19 +54,18 @@ function MeetingView(props) {
 							micOn={isMicEnabled}
 						/>
 					</div>
-					<div className='text-pretty break-words w-1/5 p-4'>
-						<p>Translation:</p>
-						<p></p>
-						<div className='chat chat-start'>
-							{
-								translation.map((t) => (
-									<div className='chat-bubble'>
-										{t.transcription}
-										<div className='divider my-2'></div>
-										{t.translation}
-									</div>
-								))
-							}
+					<div className='text-pretty break-words p-4 min-w-64 max-w-72 h-screen overflow-y-scroll'>
+						<div className='chat chat-start gap-2'>
+							{translation.map((t) => (
+								<div
+									className='chat-bubble w-full'
+									ref={lastChildRef}
+								>
+									{t.transcription}
+									<div className='divider my-2'></div>
+									{t.translation.replace('&#39;', "'")}
+								</div>
+							))}
 						</div>
 					</div>
 				</div>
