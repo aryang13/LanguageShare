@@ -43,12 +43,7 @@ export function addUserToOnlineList(uuid: string, language: string) {
     onlineUsers[uuid] = new User(uuid, language);
 }
 
-export function removeUserFromOnlineList(uuid: string) {
-    if (onlineUsers[uuid]) {
-        const disconnectedName = onlineUsers[uuid].name;
-        removeUserFromOnlineList(uuid);
-        return disconnectedName;
-    }
+export function removeUserFromOnlineList(uuid: string): null {
     return null;
 }
 
