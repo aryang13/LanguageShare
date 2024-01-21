@@ -8,14 +8,16 @@ function ParticipantView(props) {
     const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName } = useParticipant(props.participantId);
   
     const videoStream = useMemo(() => {
+      props.setIsWebCamEnabled(webcamOn);
       if (webcamOn && webcamStream) {
         const mediaStream = new MediaStream();
         mediaStream.addTrack(webcamStream.track);
         return mediaStream;
       }
-    }, [webcamStream, webcamOn]);
+    }, [webcamStream, webcamOn, props]);
   
     useEffect(() => {
+      props.setIsMicEnabled(micOn)
       if (micRef.current) {
         if (micOn && micStream) {
           const mediaStream = new MediaStream();
@@ -31,13 +33,10 @@ function ParticipantView(props) {
           micRef.current.srcObject = null;
         }
       }
-    }, [micStream, micOn]);
+    }, [micStream, micOn, props]);
   
     return (
-      <div key={props.participantId} className="w-full">
-        <p>
-          Participant: {displayName}
-        </p>
+      <div key={props.participantId} className="w-full bg-neutral-500">
         <audio ref={micRef} autoPlay muted={isLocal} />
         {webcamOn ? (
             <ReactPlayer
@@ -63,6 +62,9 @@ function ParticipantView(props) {
                 <WebcamOff />
             </div>
         )}
+        <p className="flex justify-end">
+          Participant: {displayName}
+        </p>
       </div>
     );
 }
