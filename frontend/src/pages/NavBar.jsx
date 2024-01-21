@@ -1,5 +1,6 @@
 import React from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
+import { FaWandMagicSparkles } from 'react-icons/fa6';
 
 function NavBar() {
 	return (
@@ -12,6 +13,12 @@ function NavBar() {
 				</div>
 				<div className='flex-none'>
 					<ul className='menu menu-horizontal px-1 '>
+						<li>
+							<NavLink to='/matchmaking'>
+								<FaWandMagicSparkles />
+								Matchmaking
+							</NavLink>
+						</li>
 						<li>
 							<NavLink to='/chats'>Chats</NavLink>
 						</li>

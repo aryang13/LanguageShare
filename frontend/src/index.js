@@ -4,6 +4,7 @@ import './index.css';
 import Home from './pages/Home';
 import NavBar from './pages/NavBar';
 import Chats from './pages/Chats';
+import MatchMaking from './pages/MatchMaking';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
 			{
 				path: '/chats',
 				element: <Chats />,
+			},
+			{
+				path: '/matchmaking',
+				element: <MatchMaking />,
 			},
 		],
 	},
