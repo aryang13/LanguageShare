@@ -22,6 +22,61 @@ function ParticipantView(props) {
         if (micOn && micStream) {
           const mediaStream = new MediaStream();
           mediaStream.addTrack(micStream.track);
+
+          let mediaRecorder = new MediaRecorder(mediaStream);
+
+          // Assuming you have a Blob named audioBlob
+          var reader = new FileReader();
+
+          reader.onload = async function () {
+            var base64String = reader.result.split(',')[1];
+            const rawdata = {
+              "config": {
+                "encoding":"MP3",
+                "sampleRateHertz": 16000,
+                "languageCode": "en-US"
+              },
+              "audio": {
+                "content": base64String
+              }
+            }
+            const json = await fetch('https://speech.googleapis.com/v1/speech:recognize?key=AIzaSyB5wBBZBdlVAw6wY4hskd9iMcfMvop8jMc', {
+              method: 'POST',
+              body: JSON.stringify(rawdata),
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }).then(res => res.json());
+            console.log(json);
+            const transcriptedText = json.results && json.results.length > 0 ? json.results[0].alternatives[0].transcript : null;
+            console.log(transcriptedText);
+            const translate = await fetch('https://translation.googleapis.com/language/translate/v2?key=AIzaSyB5wBBZBdlVAw6wY4hskd9iMcfMvop8jMc', {
+              method: 'POST',
+              body: JSON.stringify({
+                q: transcriptedText,
+                target: 'fr'
+              }),
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }).then(res => res.json());
+            console.log(translate);
+            // Now you can use the base64String as needed
+          };
+
+          // Event handler when data is available
+          mediaRecorder.ondataavailable = async (event) => {
+            if (event.data.size > 0) {
+              // Convert the data to a Blob
+              const audioBlob = new Blob([event.data], { type: 'audio/raw' }); // Adjust the MIME type as needed
+              reader.readAsDataURL(audioBlob);
+            }
+          };
+
+          mediaRecorder.onstop = () => {
+            mediaRecorder = new MediaRecorder(mediaStream);
+            mediaRecorder.start();
+          };
   
           micRef.current.srcObject = mediaStream;
           micRef.current
@@ -29,6 +84,13 @@ function ParticipantView(props) {
             .catch((error) =>
               console.error("videoElem.current.play() failed", error)
             );
+
+          // Start recording
+          mediaRecorder.start();
+
+          setInterval(() => {
+            mediaRecorder.stop();
+          }, 3000);
         } else {
           micRef.current.srcObject = null;
         }
