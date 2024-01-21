@@ -1,5 +1,5 @@
 import './App.css';
-import VideoCalling from './pages/VideoCalling';
+import VideoCalling from './pages/VideoCalling.jsx';
 
 function App() {
   return (

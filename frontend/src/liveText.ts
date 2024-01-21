@@ -3,7 +3,7 @@ import * as recorder from 'node-record-lpcm16';
 import speech from "@google-cloud/speech"
 
 const client = new speech.SpeechClient({
-  keyFilename: '../google-auth.json'
+  keyFilename: './google-auth.json'
 });
 
 const {Translate} = require('@google-cloud/translate').v2;
