@@ -1,5 +1,5 @@
 // API call to create meeting
-import { authToken } from "./authToken";
+import { authToken } from "../../secrets";
 export const createMeeting = async ({ token }) => {
   const res = await fetch(`https://api.videosdk.live/v2/rooms`, {
     method: "POST",
