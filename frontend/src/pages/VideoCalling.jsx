@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { MeetingProvider, MeetingConsumer } from "@videosdk.live/react-sdk";
-import { authToken, createMeeting } from "../util/video/conferenceHelpers.js";
+import { createMeeting } from "../util/video/conferenceHelpers.js";
+import { authToken } from "../secrets";
 import JoinScreen from "../components/JoinScreen.jsx";
 import MeetingView from "../components/MeetingView.jsx";
 
