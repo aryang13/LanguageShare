@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef } from "react";
 import ReactPlayer from "react-player";
 import { useParticipant } from "@videosdk.live/react-sdk";
 import WebcamOff from "../assets/icons/WebcamOff";
+import { googleAPIKey } from "../../secrets";
 
 function ParticipantView(props) {
     const micRef = useRef(null);
@@ -40,7 +41,7 @@ function ParticipantView(props) {
                 "content": base64String
               }
             }
-            const json = await fetch('https://speech.googleapis.com/v1/speech:recognize?key=AIzaSyB5wBBZBdlVAw6wY4hskd9iMcfMvop8jMc', {
+            const json = await fetch(`https://speech.googleapis.com/v1/speech:recognize?key=${googleAPIKey}`, {
               method: 'POST',
               body: JSON.stringify(rawdata),
               headers: {
@@ -50,7 +51,7 @@ function ParticipantView(props) {
             console.log(json);
             const transcriptedText = json.results && json.results.length > 0 ? json.results[0].alternatives[0].transcript : null;
             console.log(transcriptedText);
-            const translate = await fetch('https://translation.googleapis.com/language/translate/v2?key=AIzaSyB5wBBZBdlVAw6wY4hskd9iMcfMvop8jMc', {
+            const translate = await fetch(`https://translation.googleapis.com/language/translate/v2?key=${googleAPIKey}`, {
               method: 'POST',
               body: JSON.stringify({
                 q: transcriptedText,
