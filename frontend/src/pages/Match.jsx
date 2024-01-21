@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
+import { localUuid } from '../secrets';
 
-const uuid = 'eric';
+const uuid = localUuid;
 
 const Match = ({ language }) => {
     const [loading, setLoading] = useState(true);
