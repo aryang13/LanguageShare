@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { MeetingProvider, MeetingConsumer } from "@videosdk.live/react-sdk";
-import { authToken, createMeeting } from "../util/video/conferenceHelpers";
-import JoinScreen from "../components/JoinScreen";
-import MeetingView from "../components/MeetingView";
+import { authToken, createMeeting } from "../util/video/conferenceHelpers.js";
+import JoinScreen from "../components/JoinScreen.jsx";
+import MeetingView from "../components/MeetingView.jsx";
 
 function getUserInfo(userId) {
     return {
@@ -15,7 +15,7 @@ function getUserInfo(userId) {
 function VideoCalling() {
   const [meetingId, setMeetingId] = useState(null);
 
-  const userInfo = getUserInfo("xyz");
+  const userInfo = getUserInfo("xyz2");
 
   const getMeetingAndToken = async (id) => {
     const meetingId =
