@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactCountryFlag from 'react-country-flag';
+import io from "socket.io-client";
+import { localUuid } from '../secrets';
+import { useState } from 'react';
 
 function Home() {
 	const users = [
@@ -64,6 +67,44 @@ function Home() {
 		);
 	}
 
+	const [joinQuestion, setJoinQuestion] = useState('');
+	const [modalOpen, setModalOpen] = useState(false);
+
+	useEffect(() => {
+		const socket = io('http://localhost:8080');
+		const language = 'French';
+		socket.emit('online-user', localUuid, language);
+
+		socket.on('user-connected', (uuid) => {
+			console.log('user connected');
+		});
+
+		socket.emit('join-room', language, localUuid);
+
+		socket.on('user-connected', (userId) => {
+			console.log('user connected');
+		});
+
+		socket.on('join question', (joinQuestion) => {
+			setJoinQuestion(joinQuestion);
+			setModalOpen(true);
+		});
+
+		return () => {
+			socket.disconnect();
+		};
+	}, []);
+
+	const Modal = ({ isOpen, children }) => {
+		if (!isOpen) return null;
+
+		return (
+			<div className='modal'>
+				{children}
+			</div>
+		);
+	};
+
 	return (
 		<div className='grid grid-cols-3 gap-4 px-20 py-10'>
 			{users.map((user) => (
@@ -96,8 +137,27 @@ function Home() {
 					</div>
 				</div>
 			))}
+			{modalOpen && (
+				<div className='modal-box'>
+					<div className='flex flex-col'>
+						<p>You are receiving a call from "Eric".</p>
+						<ul className='menu bg-base-200 w-56 rounded-box'>
+							<button className='btn btn-green'>Accept</button>
+							<button className='btn'>Decline</button>
+						</ul>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }
 
 export default Home;
+
+			// <div>
+			// 	<p>You are receiving a call from "Eric".</p>
+			// 	<ul className='menu bg-base-200 w-56 rounded-box'>
+			// 		<button className='btn btn-green'>Accept</button>
+			// 		<button className='btn'>Decline</button>
+			// 	</ul>
+			// </div>
