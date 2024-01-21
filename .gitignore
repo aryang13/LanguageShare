@@ -1,3 +1,4 @@
 frontend/node_modules/
+frontend/google-auth.json
 frontend/yarn.lock
 backend/node_modules/
