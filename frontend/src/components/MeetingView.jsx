@@ -20,21 +20,25 @@ function MeetingView(props) {
     };
 
     const { webcamOn, micOn } = useParticipant(props.participantId);
+    const [isWebCamEnabled, setIsWebCamEnabled] = useState(webcamOn);
+    const [isMicEnabled, setIsMicEnabled] = useState(micOn);
   
     return (
       <div>
         {joined && joined === "JOINED" ? (
             <div className="flex">
-                <div className="w-full">
+                <div className="w-full flex flex-col">
                     <div className="flex justify-center">
                         {[...participants.keys()].map((participantId) => (
                             <ParticipantView
                                 participantId={participantId}
                                 key={participantId}
+                                setIsWebCamEnabled={setIsWebCamEnabled}
+                                setIsMicEnabled={setIsMicEnabled}
                             />
                         ))}
                     </div>
-                    <Controls webcamOn={webcamOn} micOn={micOn} />
+                    <Controls webcamOn={isWebCamEnabled} micOn={isMicEnabled} />
                 </div>
                 <div className="text-pretty break-words w-1/5 p-10">
                     <p>Translation:</p>
